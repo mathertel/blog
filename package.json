@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "npx @11ty/eleventy",
+    "build:prod": "set ELEVENTY_ENV=prod & npx @11ty/eleventy",
     "build:css": "sass css/doc.scss docstyle.css",
     "serve": "npx @11ty/eleventy --serve --incremental",
     "clean": "rmdir /S /Q _site",

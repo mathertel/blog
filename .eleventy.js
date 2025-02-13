@@ -10,6 +10,16 @@ import mdReplaceLink from "markdown-it-replace-link";
 // export function to configure eleventy
 export default function(eleventyConfig) {
 
+  // https://coderweekend.com/posts/setup-environments-in-eleventy/
+  // support for multiple environments `dev` `prod`
+
+  let isProduction = false;
+  let env11 = process.env.ELEVENTY_ENV;
+  if (env11) {
+    isProduction = (env11.trim().toLowerCase() === 'prod');
+  };
+  console.log(`Environment: ${isProduction ? 'Production' : 'Development'}`);
+
   eleventyConfig.addPlugin(EleventyHtmlBasePlugin, {
     extensions: "htm,html"
   });
@@ -29,9 +39,14 @@ export default function(eleventyConfig) {
   // * with modified date set to created date when not explicitely set.
   eleventyConfig.addCollection("posts", function(collectionApi) {
 
+    let sources = ["src/**/*.md"];
+    if (! isProduction) {
+      sources.push("src/**/*.draft.md");
+    }
+
     // collect all blog posts from the src folder and sort by created date
     const posts = collectionApi
-      .getFilteredByGlob("src/**/*.md")
+      .getFilteredByGlob(sources)
       .sort((a, b) => a.data.created - b.data.created);
 
     // add previous and next post references to each post
@@ -138,7 +153,6 @@ export default function(eleventyConfig) {
   eleventyConfig.addFilter("markdown", (content) => {
     let r = '';
     if (content) r = markdown.render(content.trim());
-    console.log(content, r);
     return r;
   });
 
@@ -163,6 +177,7 @@ export default function(eleventyConfig) {
     dir: {
       input: 'src',
     },
+    isProduction: isProduction
   }
 
 };
