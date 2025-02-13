@@ -1,0 +1,14 @@
+{
+  "title": "title-no-set",
+  "layout": "base",
+  "image": null,
+  "created": 0,
+  "updated": null,
+  "outdated": false,
+  "tags": [],
+
+  "eleventyExcludeFromCollections": false,
+
+  "archiveDate": "2023-01-01",
+  "changeFreq": "monthly"
+}

@@ -1,0 +1,35 @@
+{%- css %}
+.postlist-link { text-decoration: none; color: inherit; cursor: pointer; }
+blockquote.post-excerpt { margin: 0 0 1em 1em }
+
+.card-container {
+  background-color: silver;
+}
+
+.card {
+  position: relative;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  padding: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+  background-color: var(--card-back);
+  page-break-inside: avoid;
+  ,
+}
+
+.card > a:first-child ,
+.card > img:first-child {
+    margin: -0.5em 0.5em 0 0;
+    height: 100%;
+    width: 9.6rem;
+    object-fit: contain;
+}
+
+{% endcss %}
+
+{% from 'macros.njk' import postCard with context %}
+<div class="card-container">
+  {%- for post in postslist | reverse %}
+    {{ postCard(post) }}
+  {%- endfor %}
+</div>

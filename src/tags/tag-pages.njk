@@ -1,0 +1,18 @@
+---
+eleventyComputed:
+  title: "Pages tagged with '{{ tag | slugify }}'"
+  permalink: "/tags/{{ tag | slugify }}.htm"
+pagination:
+  data: collections
+  size: 1
+  alias: tag
+  filter: 
+    - all
+    - posts
+eleventyExcludeFromCollections: true
+---
+
+{% set postslist = collections[ tag ] %}
+{% include "postslist.njk" %}
+
+<p>See <a href="tags.njk">all tags</a>.</p>

@@ -1,0 +1,169 @@
+// parse html to extend links with prefix 
+import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
+
+// reference markdown conversion library
+import markdownIt from "markdown-it";
+
+// extra library to create full specified links in markdown conversion
+import mdReplaceLink from "markdown-it-replace-link";
+
+// export function to configure eleventy
+export default function(eleventyConfig) {
+
+  eleventyConfig.addPlugin(EleventyHtmlBasePlugin, {
+    extensions: "htm,html"
+  });
+
+  // Per-page bundles, see https://github.com/11ty/eleventy-plugin-bundle
+  // Adds the {% css %} paired shortcode
+  eleventyConfig.addBundle("css", {
+    toFileDirectory: "dist",
+  });
+  // Adds the {% js %} paired shortcode
+  eleventyConfig.addBundle("js", {
+    toFileDirectory: "dist",
+  });
+
+  // Collection posts: All written posts.
+  // * with forward/back navigation references  
+  // * with modified date set to created date when not explicitely set.
+  eleventyConfig.addCollection("posts", function(collectionApi) {
+
+    // collect all blog posts from the src folder and sort by created date
+    const posts = collectionApi
+      .getFilteredByGlob("src/**/*.md")
+      .sort((a, b) => a.data.created - b.data.created);
+
+    // add previous and next post references to each post
+    for (let i = 0; i < posts.length; i++) {
+      if (i > 0) {
+        posts[i].data.previous = posts[i - 1];
+      }
+
+      if (i < posts.length - 1) {
+        posts[i].data.next = posts[i + 1];
+      }
+    }
+
+    // set modified to created if not set
+    posts.forEach(p => {
+      if (!p.data.modified) {
+        p.data.modified = p.data.created;
+      }
+    });
+
+    return (posts);
+  });
+
+  // Return the keys used in an object
+  eleventyConfig.addFilter("getKeys", target => {
+    return Object.keys(target);
+  });
+
+  eleventyConfig.addFilter("filterTagList", function filterTagList(tags) {
+    return (tags || []).filter(tag => ["all", "posts"].indexOf(tag) === -1);
+  });
+
+  eleventyConfig.addFilter("toISODate", (dateObj) => {
+    if (dateObj)
+      return dateObj.toISOString().substring(0, 10);
+    else
+      return "undefined";
+  });
+
+  eleventyConfig.addFilter("toISOString", (dateObj) => {
+    if (dateObj)
+      return dateObj.toISOString();
+    else
+      return "";
+  });
+
+  // // Collection tags: List of tags in use
+  // // * with list of posts for each tag
+  // // https://stackoverflow.com/questions/72183639/how-to-create-a-tags-collection-and-a-categories-collection-in-eleventy
+  // // https://www.11ty.dev/docs/quicktips/tag-pages
+  // eleventyConfig.addCollection('tags', collection => {
+  //   const tagsSet = {};
+  //   collection.getAll().forEach(item => {
+  //     if (!item.data.tags) return;
+  //     item.data.tags
+  //       // .filter(tag => !['posts', 'all'].includes(tag))
+  //       .forEach(
+  //         tag => {
+  //           if (!tagsSet[tag]) { tagsSet[tag] = []; }
+  //           tagsSet[tag].push(item)
+  //         }
+  //       );
+  //   });
+  //   return tagsSet;
+  // });
+
+
+  // copy static files to output
+  eleventyConfig.addPassthroughCopy("src/*.css");
+  eleventyConfig.addPassthroughCopy("src/**/*.svg");
+  eleventyConfig.addPassthroughCopy("src/**/*.png");
+  eleventyConfig.addPassthroughCopy("src/**/*.jpg");
+
+  eleventyConfig.addJavaScriptFunction("compareDates", function(dateA, dateB) {
+    return items.find(item => item.id === id);
+  });
+
+
+  eleventyConfig.addJavaScriptFunction("inspect", function(value) {
+    debugger;
+
+  });
+
+
+  // development server configuration
+  eleventyConfig.setServerOptions({
+    // The default file name to show when a directory is requested.
+    indexFileName: "index.htm",
+  });
+
+
+  // use special options for markdown and enable markdown-it-replace-link
+  const markdown = markdownIt({
+    html: true,
+    breaks: false,
+    linkify: true,
+    typographer: true,
+    replaceLink: link => link.replace(/(^\/[^.]*)\.md$/, "$1.htm"),
+  });
+  eleventyConfig.setLibrary("md", markdown);
+  markdown.use(mdReplaceLink);
+
+
+  eleventyConfig.addFilter("markdown", (content) => {
+    let r = '';
+    if (content) r = markdown.render(content.trim());
+    console.log(content, r);
+    return r;
+  });
+
+  // Async support for `addPairedShortcode` is new in Eleventy v2.0.0
+  eleventyConfig.addPairedShortcode("term", function(content, termName) {
+    let r = '';
+    if (content) r = markdown.render(content.trim());
+    let html = `<dt><code>${termName}</code></dt><dd>${r}</dd>`;
+    return html;
+  });
+
+  // Async support for `addPairedShortcode` is new in Eleventy v2.0.0
+  eleventyConfig.addPairedShortcode("termlist", function(content) {
+    let html = `<dl>${content}</dl>`;
+    return html;
+  });
+
+
+  // more options as data
+  return {
+    pathPrefix: "/blog/",
+    dir: {
+      input: 'src',
+    },
+  }
+
+};
+

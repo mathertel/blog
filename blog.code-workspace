@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"npm.enableRunFromFolder": false,
+		"markdown.updateLinksOnFileMove.enabled": "always",
+		"markdown.validate.enabled": true,
+		"[markdown]": {
+			"prettier.proseWrap": "always"
+		}
+	},
+
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "node-terminal",
+				"name": "Blog WebServer with Watch",
+				"request": "launch",
+				"command": "npm run serve",
+				"cwd": "${workspaceFolder}"
+			}
+		]
+	}
+}

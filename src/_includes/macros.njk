@@ -1,0 +1,24 @@
+{# Macros to be included into --layouts and templates #}
+{# {% from 'macros.njk' import postCard with context %} #}
+
+{% macro postCard(post) %}
+<div class="card">
+  {%- if (post.data.image) -%}
+    <a  class="postlist-link" href="{{ post.url }}"><img src="{{ post.filePathStem }}.jpg"></a>
+  {%- endif %}
+  <h3><a  class="postlist-link" href="{{ post.url }}">{{ post.data.title }}</a></h3>
+  {{ post.data.description | markdown | safe -}}
+  <p>{{ post.data.modified | toISODate }} | tag1 tag2 </p>
+</div>
+{%- endmacro %}
+
+{% macro term(theTerm) %}
+<div class="card">
+  {%- if (post.data.image) -%}
+    <a  class="postlist-link" href="{{ post.url }}"><img src="{{ post.filePathStem }}.jpg"></a>
+  {%- endif %}
+  <h3><a  class="postlist-link" href="{{ post.url }}">{{ post.data.title }}</a></h3>
+  {{ post.data.description | markdown | safe -}}
+  <p>{{ post.data.modified | toISODate }} | tag1 tag2 </p>
+</div>
+{%- endmacro %}

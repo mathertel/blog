@@ -1,0 +1,13 @@
+---
+title: Tags
+seleventyExcludeFromCollections: true
+permalink: "/{{ page.filePathStem }}.htm"
+layout: base
+---
+
+<ul>
+{% for tag in collections  | getKeys | filterTagList %}
+	{% set tagUrl %}/tags/{{ tag | slugify }}.htm{% endset %}
+	<li><a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a></li>
+{% endfor %}
+</ul>
