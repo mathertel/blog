@@ -34,21 +34,28 @@ export default function(eleventyConfig) {
     toFileDirectory: "dist",
   });
 
-  // Collection posts: All written posts.
+
+  // Collection posts: All written and published posts.
+  // This is the collection that will be used instead of "all" to allow draft files.
   // * with forward/back navigation references  
-  // * with modified date set to created date when not explicitely set.
+  // * with created and modified date (not file based date).
+  // * modified date set to created date, when not specified.
   eleventyConfig.addCollection("posts", function(collectionApi) {
 
-    let sources = ["src/**/*.md"];
-    if (! isProduction) {
-      sources.push("src/**/*.draft.md");
-    }
-
     // collect all blog posts from the src folder and sort by created date
-    const posts = collectionApi
-      .getFilteredByGlob(sources)
+    let posts = collectionApi
+      .getFilteredByGlob("src/**/*.md")
       .sort((a, b) => a.data.created - b.data.created);
 
+    if (isProduction) {
+      // debugger;
+      posts = posts.filter((p) => {
+        return(p.fileSlug.indexOf('.draft') < 0);
+      });
+    }
+    // posts.addFilter("inspect", function(value) { debugger; });
+
+      
     // add previous and next post references to each post
     for (let i = 0; i < posts.length; i++) {
       if (i > 0) {
@@ -67,8 +74,10 @@ export default function(eleventyConfig) {
       }
     });
 
+    console.log(`# of published posts: ${posts.length}`);
     return (posts);
   });
+
 
   // Return the keys used in an object
   eleventyConfig.addFilter("getKeys", target => {
@@ -78,6 +87,11 @@ export default function(eleventyConfig) {
   eleventyConfig.addFilter("filterTagList", function filterTagList(tags) {
     return (tags || []).filter(tag => ["all", "posts"].indexOf(tag) === -1);
   });
+
+  eleventyConfig.addFilter('unique', (list) => {
+    const map = new Map(list.map((x) => [x, x]));
+    return [...map.values()]
+  })
 
   eleventyConfig.addFilter("toISODate", (dateObj) => {
     if (dateObj)

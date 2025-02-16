@@ -27,6 +27,10 @@ transition: box-shadow 0.3s ease-in-out;
 
 * lowercase only.
 
+Date mechanisms:
+
+[text](https://www.11ty.dev/docs/dates/)
+
 
 ## Give and Take Psychology
 

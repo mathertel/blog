@@ -130,8 +130,8 @@ export default class MyTime extends HTMLTimeElement {
 </script>
 ```
 
-* See [Customized time element](sfc-time.md)
-* See [Sorting Tables](sfc-time.md)
+* See [Customized time element](../src/2025-03-sfc/sfc-time.draft.md)
+* See [Sorting Tables](../src/2025-03-sfc/sfc-time.draft.md)
 
 
 ## Loading Components
