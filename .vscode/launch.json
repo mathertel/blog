@@ -10,7 +10,14 @@
       "name": "Run Script: build:prod",
       "request": "launch",
       "command": "npm run build:prod",
-      "cwd": "${workspaceFolder}"
+      "cwd": "${workspaceFolder}",
+      "serverReadyAction": {
+        "pattern": "Server at http:\/\/([A-Za-z0-9]+:[0-9]+)\/blog/",
+        "uriFormat": "http://%s/blog/index.htm",
+        "action": "openExternally"
+      }
+
+
     }
   ]
 }

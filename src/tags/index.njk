@@ -3,11 +3,12 @@ title: Tags
 seleventyExcludeFromCollections: true
 permalink: "/{{ page.filePathStem }}.htm"
 layout: base
+eleventyImport:
+  collections: ["posts", "arduino", "sfc", "eleventy"]
 ---
 
-<ul>
-{% for tag in collections  | getKeys | filterTagList %}
-	{% set tagUrl %}/tags/{{ tag | slugify }}.htm{% endset %}
-	<li><a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a></li>
-{% endfor %}
-</ul>
+      <blockquote class='taglist'>
+  {%- for tag in collections | getAllUsedTags %}
+      <a href="/tags/{{ tag | slugify }}.htm" class="post-tag" style="display:inline-block;margin-bottom:0.4em">#{{ tag }}</a><br />
+  {%- endfor %}
+      </blockquote>

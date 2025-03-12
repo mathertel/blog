@@ -1,10 +1,8 @@
 ---
 title: Node.js on Windows 11
 created: 2025-01-19
-tags: ["blog", "nodejs"]
+tags: ["nodejs"]
 ---
-
-{% include './toc.njk' %}
 
 ## Download and Install Node.js
 

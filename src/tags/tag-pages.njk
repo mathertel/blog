@@ -2,17 +2,26 @@
 eleventyComputed:
   title: "Pages tagged with '{{ tag | slugify }}'"
   permalink: "/tags/{{ tag | slugify }}.htm"
+layout: base
 pagination:
   data: collections
   size: 1
   alias: tag
-  filter: 
+  filter:
     - all
     - posts
 eleventyExcludeFromCollections: true
+eleventyImport:
+  collections: ["posts", "arduino", "sfc", "eleventy"]
 ---
 
-{% set postslist = collections[ tag ] %}
-{% include "postslist.njk" %}
+{% from 'macros.njk' import postCard with context %}
 
-<p>See <a href="tags.njk">all tags</a>.</p>
+<div class="card-container horizontal" style="--card-image-size: 200px;--card-height: 200px;">
+  {%- for post in collections[ tag ] | reverse %}
+    {% if post.data.outdated or lastDate < archiveDate %}
+    {% else %}
+      {{ postCard(post) }}
+    {% endif %}
+  {%- endfor %}
+</div>

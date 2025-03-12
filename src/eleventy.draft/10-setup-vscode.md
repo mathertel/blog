@@ -4,8 +4,6 @@ created: 2025-01-21
 tags: ["vscode"]
 ---
 
-{% include './toc.njk' %}
-
 t.b.d.
 
 Visual Studio Code (VSCode) is the tool for creating and authoring the blog.  It is free to use and can be installed by

@@ -1,0 +1,1466 @@
+// file: base.scss
+// colors, dark mode, sizes, page level layout
+// This is part of the micro css implementation.
+
+// ===== Colors =====
+// hue of 220 is signature of this style
+
+@use 'sass:color';
+
+// the u-hue value is the main color of the style
+$u-hue: 220deg;
+
+$u-primary: hsl($u-hue 80% 30%); // active objects
+$u-primary-text: white;
+
+$u-border-color: #555555;
+$u-border-color-active: hsl($u-hue 100% 30%);
+
+$u-disabled: gray; // disabled objects
+$u-connect: #00cc00; // connectivity / net
+
+$u-padding-text: 4px;
+$u-padding-block: calc(2 * $u-padding-text);
+
+$u-border-size: 1px;
+$u-border: $u-border-size solid $u-border-color;
+$u-border-none: $u-border-size solid transparent;
+$u-border-active: $u-border-size solid $u-border-color-active;
+
+
+// ===== Content Box Sizes =====
+
+$u-white-space: 1rem;
+$u-gutter: calc($u-white-space / 2);
+$u-gutter2: calc($u-white-space / 4);
+
+// distance between paragraphs and other textual blocks
+$u-text-spacing: calc($u-white-space / 2);
+
+$u-btn-radius: calc($u-padding-block / 2);
+$u-output-border: $u-border-none;
+
+
+// ===== font =====
+
+$u-font-sans-serif: arial, ui-sans-serif, sans-serif;
+
+// ===== main =====
+
+:root {
+  color-scheme: light dark;
+
+  // standard colors used for <html>
+  --back: light-dark(hsl(#{$u-hue} 2% 85%), hsl(#{$u-hue} 2% 15%));
+  --color: light-dark(hsl(#{$u-hue} 0 10%), hsl(#{$u-hue} 0 90%)); 
+
+  --success-hue: 80deg;
+  --success-back: hsl(var(--success-hue) 90% 75%);
+  --success-line: hsl(var(--success-hue) 90% 40%);
+
+  --warning-hue: 40deg;
+  --warning-back: hsl(var(--warning-hue) 90% 75%);
+  --warning-line: hsl(var(--warning-hue) 90% 40%);
+  --warning-color: black;
+  
+  --error-hue: 0deg;
+  --error-back: hsl(var(--error-hue) 90% 75%);
+  --error-line: hsl(var(--error-hue) 90% 40%);
+  --error-color: color;
+
+  --focus: #{hsl($u-hue, 50%, 50%)};
+
+  --text-spacing: #{$u-text-spacing};
+  --transition: 0.3s ease;
+}
+
+html,
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: $u-font-sans-serif;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  color: var(--color);
+  background-color: var(--back);
+}
+
+// apply a natural box layout model to all elements, but allowing components to change
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+img {
+  max-width: 600px;
+  height: auto;
+}
+
+a,
+a:any-link {
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+// use-cases of svg icons
+
+svg {
+  color: currentcolor;
+
+  &.button {
+    width: 2em;
+    height: 2em;
+
+    .object {
+      fill: $u-primary;
+      fill-opacity: 1;
+    }
+
+    .connect {
+      fill: $u-connect;
+      fill-opacity: 1;
+    }
+  }
+
+  &.icon {
+    user-select: none;
+  }
+}
+
+
+// Title us used everywhere
+h1 {
+  font-size: 2em;
+}
+
+
+
+// form elements
+
+label,
+input,
+input+span,
+input::placeholder,
+select,
+output,
+button {
+  display: inline-block;
+  font-size: inherit;
+  margin: 0;
+  border: $u-border-none;
+  padding: 0.1em 0.2em;
+  color: currentcolor;
+}
+
+input[type='color'] {
+  padding: 0;
+  border: 0;
+}
+
+input::placeholder {
+  padding-top: 0.4em;
+  font-size: 0.8em;
+}
+
+label {
+  cursor: pointer;
+  height: 1.6em;
+
+  >img,
+  >.icon {
+    // vertical-align: middle;
+    width: 1em !important;
+    height: 1em !important;
+    margin: 0 !important;
+  }
+}
+
+input,
+select,
+button {
+  border-color: var(--color);
+}
+
+input,
+select {
+  width: 22ch;
+  border-radius: 0.2em;
+}
+
+select {
+  padding-left: 0;
+}
+
+select:invalid,
+input:invalid {
+  border-color: #ff5555;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  width: 2ch;
+  vertical-align: baseline;
+}
+
+// ===== Native dialogs and focus Object
+
+dialog::backdrop {
+  background-color: rgb(200 200 200 / 70%);
+}
+
+dialog {
+  position: relative;
+  padding: 1rem;
+  background-color: canvas;
+  border: 0;
+
+  .u-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    height: 1.6rem;
+    width: 1.6rem;
+    background-color: red;
+    background-size: 1.6rem 1.6rem;
+    background-repeat: no-repeat;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M12 12L36 36M36 12L12 36' stroke='white' stroke-width='8' stroke-linecap='round' /></svg>");
+    z-index: 1 !important;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2rem;
+    height: 2rem;
+    z-index: -1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M0 0h48v48h-16v-32h-32z' fill='red' /></svg>");
+  }
+}
+
+.warning {
+  border: 2px solid var(--warning-line);
+  background-color: var(--warning-back);
+  color: var(--warning-color);
+}
+
+.error {
+  border: 2px solid var(--error-line);
+  background-color: var(--error-back);
+  color: var(--error-color);
+}
+
+.invalid {
+  border: 2px solid #ff1111 !important;
+  background-color: #ffcccc !important;
+  color: var(--color);
+}
+
+.valid {
+  border: 2px solid #00cc00 !important;
+  background-color: #ccffcc !important;
+  color: var(--color);
+}
+
+.noprint {
+  @media print {
+    display: none !important;
+  }
+}
+// CSS for HTML cards and card design without any dependencies.
+
+@use "base";
+@use "page";
+
+// ===== card Layout settings =====
+// The card layout is based on a grid of cards with a fixed width and height.
+// The values are available as sass variables '$u-card-NNN'
+// to be used in @media and @container rules
+// and as CSS variables '--card-NNN' to enable overriding on card-containers.
+// CSS variables cannot be used in @media and @container rules.
+
+// 365 px
+
+// pixel units are required to create exact card sizes.
+$u-card-width: 280px;
+$u-card-gap: 16px;
+
+// ===== card style settings =====
+
+// $u-card-shadow: 0.2em 0.2em 0.4em rgba(0, 0, 0, 0.2);
+
+:root {
+  /* pixel units are preferred to create exact card sizes. */
+  --card-width: #{$u-card-width};
+  --card-gap: #{$u-card-gap};
+
+  // cards can have fixed or variable height specified by the --card-height variable.
+  --card-height: 320px;
+
+  // horizontal cards have fixed height and are stretched to the total width of the card-container.
+
+  // Design of cards, colors borders, paddings
+  --card-back: light-dark(white, black);
+  --card-color: var(--main-color);
+  --card-head: hsl(#{base.$u-hue} 20% 80%);
+  --card-head-active: #{hsl(base.$u-hue, 80%, 80%)};
+  --card-border: none;
+  --card-padding: 0.5em;
+  --card-image-size: 120px;
+  --card-radius: 1em;
+}
+
+// ===== card container =====
+
+// The card-container will contain and position all cards according to the given rules.
+// By using some flags based on supplement class names
+// Also it acts as a variable holder for card implementations that can overwrite the default values.
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  // one column only as default
+  width: 100%;
+  gap: var(--card-gap); // $u-card-gap;
+  // center in main container by default
+  margin: 0 auto;
+
+  >.card {
+    position: relative;
+    width: var(--card-width);
+    height: var(--card-height);
+
+    // used a card grid for normal cards (not horizonal)
+    display: grid;
+    grid-template: "header" auto "main" 1fr "footer" auto / auto;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    page-break-inside: avoid;
+    overflow: hidden;
+    background-color: var(--card-back);
+    border: var(--card-border);
+    border-radius: var(--card-radius);
+
+    @media print {
+      border: 1px solid var(--color);
+    }
+
+    // cards can be marked with class='wide' covering 2 columns
+    &.wide {
+      width: calc(var(--card-width) * 2 + var(--card-gap));
+    }
+
+    // cards can be marked with class='small' covering 1/2 column
+    &.small {
+      width: calc((var(--card-width) - var(--card-gap)) / 2);
+      height: calc((var(--card-height) - var(--card-gap)) / 2);
+    }
+
+    &.shadow {
+      box-shadow: var(--dropshadow);
+    }
+
+    // images as first element in card
+    >svg:first-child,
+    >img:first-child {
+      grid-area: header;
+      width: 100%;
+      height: var(--card-image-size);
+      object-fit: cover;
+
+      &.icon {
+        width: 2.75rem;
+        height: 2.75rem;
+      }
+    }
+
+    .header {
+      grid-area: header;
+      background-color: var(--card-head);
+      padding: var(--card-padding);
+      min-height: 2.75em; // with or without icon
+      max-height: 4rem;
+
+      h3,
+      h4 {
+        margin: 0;
+      }
+
+      // images in header
+      >svg:first-child,
+      >img:first-child {
+        // display: block;
+        float: left;
+        height: 2.75rem;
+        aspect-ratio: 1/1;
+        margin-right: var(--card-padding);
+      }
+    }
+
+    .main,
+    .body {
+      grid-area: main;
+      flex: 1;
+      padding: var(--card-padding);
+    }
+
+    .footer,
+    .actions {
+      grid-area: footer;
+      height: auto;
+      width: 100%;
+      padding: var(--card-padding);
+      border-top: 1px solid rgb(0 0 0 / 12.5%);
+      background-color: inherit;
+    }
+
+    &.autolink h3>a::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      content: "";
+    }
+  }
+
+  // container marked with class='horizontal' for horizontal oriented cards
+  // stretching on the whole with with image on the left */
+  &.horizontal {
+    --card-width: 100%;
+    --card-height: 7.2rem;
+
+    >.card {
+      grid-template: "header main" 1fr "header footer" auto / max-content auto;
+
+      >svg:first-child,
+      >img:first-child {
+        width: var(--card-image-size);
+        height: 100%;
+      }
+    }
+  }
+
+  // Cards with a defined, fixed width can be placed multiple times on one row when the with is giving enough space.
+  // For these cases the card-container implements the layout allowing centering the card collection in the center of the main content.
+  // Marking the card-container with class='col280' to provide multiple columns with width 280px.
+  // As css variables cannot be used in the css selectors they are hard-calculated here (with the help of sass if you like)
+
+
+  &.col280 {
+    // N columns of 280px cards with 16px gap
+    // 280*N + 16*(N-1)) = 280, 576, 872,  1168, ... in reverse with container queries
+    // 4 columns maximum
+    width: calc($u-card-width * 4 + $u-card-gap * 3);
+
+    // @container main (width < #{$u-card-4col}) {
+    @container main (width < #{$u-card-width * 4 + $u-card-gap * 3}) {
+      width: calc($u-card-width * 3 + $u-card-gap * 2);
+    }
+
+    @container main (width < #{$u-card-width * 3 + $u-card-gap * 2}) {
+      width: calc($u-card-width * 2 + $u-card-gap);
+    }
+
+    @container main (width < #{$u-card-width * 2}) {
+      width: $u-card-width;
+    }
+  }
+
+  &.col365 {
+    // N columns of 365px cards with 10px gap
+    // 280*N + 16*(N-1)) = 365, 740, 1115, 1490, ... in reverse with container queries
+
+    --card-width: 365px;
+    --card-gap: 10px;
+
+    // 4 columns maximum
+    width: calc(365px * 4 + 10px * 3);
+
+    // @container main (width < #{$u-card-4col}) {
+    @container main (width <= #{365px * 4 + 10px * 3}) {
+      width: calc(365px * 3 + 10px * 2);
+    }
+
+    @container main (width < #{365px * 3 + 10px * 2}) {
+      width: calc(365px * 2 + 10px);
+    }
+
+    @container main (width < #{365px * 2}) {
+      width: 365px;
+    }
+  }
+}
+
+
+// simple content cards with image + text
+.plaincard,
+.imgcard,
+.iconcard {
+  position: relative;
+  margin: base.$u-gutter base.$u-gutter base.$u-gutter 0;
+  width: 100%;
+  max-width: 100%;
+  background-color: var(--card-back);
+  page-break-inside: avoid;
+
+  >h3 {
+    margin-top: 0;
+  }
+}
+
+// card with text only
+.plaincard {
+  padding: base.$u-gutter2;
+  min-height: 6rem;
+}
+
+// cards with icon
+.iconcard {
+  padding: base.$u-gutter base.$u-gutter base.$u-gutter calc(4rem + 2 * base.$u-gutter);
+  min-height: 5.4rem;
+
+  svg {
+    position: absolute;
+    top: base.$u-gutter;
+    left: base.$u-gutter;
+    height: 4rem;
+    width: 4rem;
+  }
+}
+
+// picture with 4:3 ratio + text
+.imgcard {
+  padding: base.$u-gutter2 base.$u-gutter2 0 calc(9.6rem + base.$u-gutter2);
+  min-height: 7.2rem;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: auto;
+    width: 9.6rem;
+    max-height: 7.2rem;
+  }
+}
+// file: code.scss
+// styling of regions for code and code-terms
+// This is part of the micro css implementation.
+
+// valid code regions are: <pre><code> (block level) and <p><code> (inline)
+// re-using some variables from base.scss
+
+// * no need for specifying a ont on code tags as it is monospaced by default.
+// * minimal syntax coloring is added
+
+// ===== Colors =====
+
+// ===== main =====
+
+:root {
+  --code-back: rgb(245 245 230);
+  --code-text: black;
+  --code-border: 1px solid var(--code-text);
+  --code-radius: var(--text-spacing);
+}
+
+// ===== Text containers =====
+pre:has(>code) {
+  display: block;
+  padding: 0; // var(--text-spacing);
+  font-size: 1rem;
+  border: var(--code-border);
+  border-left: var(--code-radius) solid #4060A0;
+  border-radius: var(--code-radius);
+  background-color: var(--code-back);
+  background-image: linear-gradient(transparent 50%, rgb(0 0 0 / 6%) 50%);
+  background-size: auto 2.4em ;
+  background-origin: content-box;
+  background-attachment: local;
+
+  &:not(:first-child) {
+    margin-top: calc(var(--text-spacing) * 3);
+  }
+
+  code {
+    display: block;
+    color: black;
+
+    // font-family: Consolas,Monaco,"Andale Mono","Ubuntu Mono",monospace;
+    font-size: 1rem;
+    line-height: 1.2;
+    padding-left:0.2em;
+
+    .comment,.block-comment { color: #7d8b99 }
+    .property,.tag,.boolean,.number,.function-name,.constant,.symbol { color: #c92c2c }
+    .selector,.attr-name,.string,.char,.function,.builtin { color: #2f9c0a }
+    .attr-value, .keyword, .class-name { color: #1990b8; }
+
+    @media print {
+      border: 1px solid var(--code-text);
+    }
+  }
+}
+
+
+p > code {
+  // font-family: Consolas,Monaco,"Andale Mono","Ubuntu Mono",monospace;
+  font-size: 1rem;
+  padding: 0 var(--text-spacing);
+  background-color: var(--code-back);
+  color: black;
+}
+// file: doc.scss
+// document layout rules
+// This is part of the micro css implementation.
+
+@use "base";
+@use "page";
+@use "card";
+@use "code";
+@use "iot";
+
+// Tables
+
+table {
+  empty-cells: show;
+  border-collapse: collapse;
+  border-left: solid 1px #203050;
+  border-right: solid 1px #203050;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+
+  thead tr {
+    background-color: #203050;
+
+    th {
+      color: white;
+    }
+  }
+
+  td,
+  th {
+    vertical-align: top;
+    padding: 0.2em 0.6em;
+    border-bottom: 1px solid #203050;
+  }
+
+  th {
+    font-weight: bold;
+  }
+}
+
+
+.warning {
+  margin: 0.2rem;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+}
+
+
+// mark links to external sites
+
+a[href^='http']::after {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: text-bottom;
+  margin-left: 0.25em;
+  background-size: 1em;
+  background-image: url("data:image/svg+xml, %3Csvg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22.689 4v4.918h13.114l-17.049 17.05 3.279 3.606 17.377-17.05v12.787H44V4z' /%3E%3Cpath d='M33 22.99V40H8V15h17v-4l-21 .001V44h33V22.952z' /%3E%3C/svg%3E");
+}
+
+
+// ===== Text formatting =====
+
+p,
+pre,
+h1,
+h2,
+h3,
+h4,
+.text {
+  margin: 0;
+  min-height: 1em;
+
+  >img,
+  >svg {
+    // assume image in text containers to be inline icons
+    height: 1em;
+    height: auto;
+
+    &:first-child {
+      margin-right: 0.2em;
+    }
+  }
+}
+
+p:not(:first-child),
+pre:not(:first-child),
+.text:not(:first-child) {
+  margin-top: var(--text-spacing);
+}
+
+h1:not(:first-child),
+h2:not(:first-child),
+h3:not(:first-child),
+h4:not(:first-child) {
+  margin-top: calc(var(--text-spacing) * 3);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+  font-family: base.$u-font-sans-serif;
+  font-weight: bold;
+  clear: both;
+}
+
+// Title h1 in base.scss
+
+// Chapter
+h2 {
+  font-size: 1.6em;
+  min-height: 1.6em;
+}
+
+// Topic
+h3 {
+  font-size: 1.25em;
+  min-height: 1.25em;
+}
+
+// Subtitle
+h4 {
+  font-size: 1em;
+  min-height: 1em;
+}
+
+
+@media print {
+  html,
+  body {
+    font-size: 0.66em;
+    background-color: white;
+  }
+}// file: extras.scss
+// rules, not in use
+// This is part of the micro css implementation.
+
+/* === Responsive Utilities === */
+
+.display-xs {
+  display: none;
+}
+
+@media (width < 768px) {
+  .hidden-xs {
+    display: none;
+  }
+
+  .display-xs {
+    display: initial;
+  }
+}
+@use "sass:color";
+@use "base";
+@use "card";
+@use "page";
+
+// file: iot.scss
+// Element and card rules for iot dashboards
+// This is part of the micro css implementation.
+
+$u-on: color.scale(green, $lightness: 10%);
+$u-off: red;
+
+// ===== Cards layout =====
+
+:root {
+  --grid-width: 20ch;
+  --grid-gap: 1ch;
+}
+
+// iot specific card modifications
+.card {
+  &.active {
+    .border {
+      border-color: base.$u-border-color-active;
+    }
+
+    .band::-webkit-slider-thumb {
+      border-color: base.$u-border-color-active transparent;
+    }
+
+    >.header {
+      background-color: var(--card-head-active);
+    }
+  }
+
+  img,
+  svg {
+    &.active {
+      background-color: limegreen;
+    }
+  }
+
+  >hr {
+    background-color: rgb(0 0 0 / 12.5%);
+    border: 0;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    vertical-align: top;
+  }
+}
+
+
+// ===== forms / input / groups =====
+
+button,
+.button {
+  display: inline-block;
+  min-width: 6.5ch;
+
+  // height: 1.4em;
+  padding: calc(base.$u-padding-text / 2) base.$u-padding-text;
+  border-radius: base.$u-btn-radius;
+  border-color: base.$u-primary;
+  background-color: base.$u-primary;
+  color: base.$u-primary-text;
+  cursor: pointer;
+  user-select: none;
+
+  &:visited {
+    color: white;
+  }
+
+  &:disabled,
+  &:disabled:focus {
+    border-color: base.$u-disabled;
+    background-color: base.$u-disabled;
+  }
+
+  &.active {
+    background-color: #acc1e4 !important;
+    border-color: #203050 !important;
+  }
+
+  &.secondary {
+    background-color: #777777;
+    border-color: #777777;
+  }
+}
+
+// standard input elements
+
+option[disabled] {
+  color: base.$u-disabled;
+}
+
+// slider implemented using input[type=range] element
+
+input[type='range'] {
+  appearance: none;
+  -webkit-appearance: none; // stylelint-disable-line property-no-vendor-prefix
+  vertical-align: top;
+  margin: 0.2em;
+  height: 1.2em;
+  padding: 0;
+  width: 9.8em;
+  transition: 0.4s all ease-out;
+
+  // border: 1px solid #555555;
+  border-radius: 0.6em;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none; // stylelint-disable-line property-no-vendor-prefix
+    height: 1em;
+    width: 1em;
+    border-radius: 0.5em;
+    background: #203050;
+    border: 1px solid #f0f0f0;
+    cursor: pointer;
+  }
+}
+
+// switch = slider with range 0..1
+
+input.switch[type='range'] {
+  pointer-events: none;
+  width: 2.5em !important;
+}
+
+*:focus {
+  outline: 0;
+  box-shadow: 0 0 0.1rem 0.2rem var(--focus);
+}
+
+.btn-group {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+
+  >* {
+    flex: 1 1 auto;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  >*:first-child {
+    border-top-left-radius: base.$u-btn-radius;
+    border-bottom-left-radius: base.$u-btn-radius;
+  }
+
+  >*:last-child {
+    border-top-right-radius: base.$u-btn-radius;
+    border-bottom-right-radius: base.$u-btn-radius;
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 12.6ch auto;
+  grid-gap: 5px;
+  margin-bottom: 0.5rem;
+
+  >* {
+    grid-column-end: -1;
+  }
+
+  >label {
+    grid-column: 1;
+    text-align: right;
+  }
+
+  >.wide {
+    grid-column: 1/-1;
+  }
+
+  .icon {
+    width: 1.2em;
+    height: 1.2em;
+    margin: 0.2em;
+  }
+}
+
+.form-inline {
+  height: 1.6em;
+
+  >* {
+    vertical-align: top;
+  }
+}
+
+.form-actions {
+  display: flex;
+  flex-flow: row wrap;
+  gap: base.$u-gutter2;
+}
+
+
+// ===== element Icons =====
+
+.element {
+  position: relative;
+  display: inline-block;
+  height: 6rem;
+  width: 6rem;
+  margin: 0.6rem;
+
+  &.wide {
+    width: 10rem;
+  }
+
+  >svg,
+  >img {
+    position: relative;
+    left: 1rem;
+    top: 0.4rem;
+    height: 4rem;
+    width: 4rem;
+  }
+
+  >.id {
+    position: absolute;
+    display: inline-block;
+    bottom: 0.4rem;
+    left: 0;
+    height: 1rem;
+    width: 6rem;
+    text-align: center;
+  }
+
+  >.info {
+    position: absolute;
+    display: inline-block;
+    top: 0.4rem;
+    right: 0;
+    height: 5.2rem;
+    width: 4rem;
+  }
+}
+
+// ===== Value indicators for the web UI =====
+// using ux- prefix.
+
+.u-bool {
+  display: inline-block;
+  height: 1.4rem;
+  width: 1.4rem;
+  border-radius: 0.7rem;
+  text-align: center;
+  background-color: silver;
+}
+
+.u-bool[value='1'] {
+  background-image: linear-gradient(145deg, color.adjust($u-on, $lightness: 30%), $u-on);
+}
+
+.u-bool[value='0'] {
+  background-image: linear-gradient(145deg, color.adjust($u-off, $lightness: 30%), $u-off);
+}
+
+// visualizing the output level 0...max
+.ux-levelbar {
+  display: inline-block;
+  border-color: base.$u-primary;
+  border-style: solid;
+  border-width: 1px;
+  width: 32px;
+  height: 64px;
+}
+
+// show something on the right side of the card visualizing the actual value of the element
+
+.ux-value {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+}
+
+// Timer-bar
+
+.u-bar {
+  position: relative;
+  height: 1.4em;
+  width: 100%;
+  background-color: #aaaaaa;
+}
+
+.u-bar>.pulse,
+.u-bar>.current {
+  display: inline-block;
+  position: absolute;
+}
+
+.u-bar>.pulse {
+  top: 0;
+  left: 0;
+  height: 1.4em;
+  background-color: green;
+}
+
+.u-bar>.current {
+  top: 0.4em;
+  height: 0.6em;
+  background-color: red;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.border {
+  border: base.$u-border;
+}
+
+// ===== Display Element =====
+
+.display {
+  position: relative;
+  box-sizing: content-box;
+  margin: auto;
+  line-height: 10px;
+  font-size: 10px;
+  font-family: Verdana, Geneva, sans-serif;
+  border: 2px solid base.$u-border-color;
+
+  >span {
+    box-sizing: border-box;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10px;
+    overflow: hidden;
+    background-color: transparent;
+
+    &.text {
+      color: var(--color);
+    }
+
+    &.dot {
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+
+      &.active {
+        background-color: green;
+      }
+    }
+  }
+
+  >button {
+    box-sizing: border-box;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10px;
+    overflow: hidden;
+    background-color: pink;
+    color: var(--color);
+    border-radius: 0.4em;
+  }
+
+}
+
+// #display
+
+.displayinc {
+  position: relative;
+  margin: auto;
+  zoom: 2;
+
+  >.icon {
+    width: 1.2em;
+    height: 1.2em;
+    margin: 0;
+  }
+}
+
+// ===== Light input sliders =====
+
+input.band {
+  width: 100%;
+  border-radius: 0;
+  border-width: 1px;
+
+  &.hue {
+    background: linear-gradient(to right, red 0%, yellow 17%, lime 33%, aqua 50%, blue 67%, fuchsia 83%, red 100%);
+  }
+
+  &.white,
+  &.lightness,
+  &.saturation {
+    background: linear-gradient(to right, black 0%, white 100%);
+  }
+}// page level layout using areas header, navbar, main, aside*, footer
+// nav and aside is optional
+
+// <header> : header area with logo and top-level links
+// <.navbar> : navigation next to the header
+// <main> for content
+// <.sidebar> used for aside or additional links 
+// <footer> : legal, copyright, ...
+
+// <nav class='menu'> is a vertical menu that can slide in and out by using some scripting.
+// .open nav.menu is visible
+
+@use 'base';
+
+// The width of the page level elements must be known for the @media queries.
+$u-menu-width: 14em;
+$u-main-width: 42em;
+$u-sidebar-width: 14em;
+$u-menu-width: 14em;
+$u-layout-gap: 1em;
+
+// width <= $u-main-width : stacked layout
+// width >= $u-main-width && width <= $u-menu-width+ $u-sidebar-width: side by side main+sidebar, menu as fly-in
+// width >= $u-menu-width+ $u-sidebar-width + $u-main-width + $u-menu-width 
+
+// && width <= $u-menu-width+ $u-sidebar-width: side by side main+sidebar, menu as fly-in
+
+
+:root {
+  --sidebar-width: #{$u-sidebar-width};
+
+  --layout-gap: #{$u-layout-gap};
+  --layout-padding: 0.5em;
+
+  --header-back: var (--back);
+  --header-color: var (--color);
+
+  // --main-back: light-dark(white, black);
+  --main-back: light-dark(hsl(#{base.$u-hue} 0 90%), hsl(#{base.$u-hue} 0 10%));
+  --main-color: var(--color);
+  --main-width: #{$u-main-width};
+
+  --navbar-back: #{base.$u-primary};
+  --navbar-color: white;
+  --navbar-padding: var(--layout-padding);
+
+  --footer-back: var(--back);
+  --footer-color: var(--color);
+
+  // menu element
+  --menu-back: light-dark(white, black);
+  --menu-color: light-dark(black, white);
+  --menu-top: 0;
+  --menu-width: #{$u-menu-width};
+  --menu-padding: var(--layout-padding);
+
+  --dropshadow: rgb(0 0 0 / 40%) 4px 4px 12px 0;
+}
+
+body.sitelayout {
+  display: grid;
+  gap: 0; // don't use gap, use margin
+  width: var(--main-width);
+  margin: 0 auto;
+  padding: $u-layout-gap 0 0 0;
+  grid-template-columns: 1fr;
+  grid-template-areas: "header" "navbar" "main" "sidebar" "footer";
+
+  // by default: all stacked
+
+  @media (#{$u-main-width + $u-layout-gap + $u-sidebar-width} <=width) {
+    // main + sidebar is possible
+
+    &:has(>.sidebar) {
+      width: #{$u-main-width + $u-sidebar-width + $u-layout-gap};
+      grid-template-columns: 1fr auto;
+      grid-template-areas: "header header" "navbar navbar" "main sidebar" "footer footer";
+    }
+  }
+
+  >header {
+    grid-area: header;
+    margin-bottom: var(--layout-gap);
+  }
+
+  >.navbar {
+    grid-area: navbar;
+    margin-bottom: var(--layout-gap);
+  }
+
+  >main {
+    grid-area: main;
+  }
+
+  >.sidebar {
+    grid-area: sidebar;
+    margin-left: var(--layout-gap);
+  }
+
+  >footer {
+    grid-area: footer;
+    margin-top: var(--layout-gap);
+  }
+
+  &.fillscreen {
+    width: 100vw;
+    height: 100vh;
+    grid-template-rows: auto auto 1fr auto;
+  }
+
+  header {
+    display: flex;
+    padding: var(--layout-padding);
+    background-color: var(--header-back);
+    color: var(--header-color);
+
+    @media print {
+      display: none !important;
+    }
+
+    >.icon {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    >h1 {
+      margin: 0;
+      padding: 0;
+    }
+
+    >* {
+      align-self: center;
+      display: inline-block;
+    }
+
+    >*:not(:first-child) {
+      margin-left: var(--layout-padding);
+    }
+
+    >.logo {
+      font-size: 160%;
+      font-weight: bold;
+    }
+
+    a {
+      text-decoration: none;
+      width: 12ch;
+      text-align: center;
+      padding: 0.2ch 1ch;
+      transition: box-shadow 0.3s ease-in-out;
+
+      &:hover {
+        box-shadow: var(--dropshadow);
+      }
+    }
+  }
+
+  // nav.navbar is a horizontal always visible area just below the header.
+  .navbar {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: var(--layout-padding);
+    background-color: var(--navbar-back);
+    color: var(--navbar-color);
+
+    >* {
+      align-self: center;
+    }
+
+    >.gap {
+      flex-grow: 2;
+    }
+
+    >a {
+      text-decoration: none;
+      font-size: 1.25em;
+      min-width: 2em;
+      padding: 0 var(--layout-padding);
+
+      &:hover {
+        border-color: var(--focus);
+        background-color: var(--focus);
+      }
+    }
+
+    >button,
+    >img,
+    >svg {
+      padding: 0;
+      min-width: 1.25em !important;
+      width: 1.25em !important;
+      height: 1.25em !important;
+    }
+
+    >*:not(:first-child) {
+      margin-left: var(--layout-padding);
+    }
+
+    >button:hover {
+      box-shadow: var(--dropshadow);
+    }
+
+    @media print {
+      display: none;
+    }
+
+  }
+
+  .sidebar {
+    color: var(--main-color);
+    background-color: var(--main-back);
+    padding: var(--layout-padding);
+    width: var(--sidebar-width);
+
+    @media print {
+      display: none !important;
+    }
+  }
+
+  main {
+    background-color: var(--main-back);
+    color: var(--main-color);
+    padding: var(--layout-padding);
+    container-name: main;
+    container-type: inline-size;
+  }
+
+  footer {
+    background-color: var(--main-back);
+    color: var(--main-color);
+    padding: var(--layout-padding);
+  }
+
+}
+
+// ===== Menu mechanics =====
+
+// https://chrome.dev/css-wrapped-2024/#the-popover-api
+
+.menu {
+  position: absolute;
+  display: block;
+  border: 1px solid var(--menu-color);
+  background-color: var(--menu-back);
+  color: var(--menu-color);
+  width: var(--menu-width);
+  min-height: 360px;
+  z-index: 1;
+  top: 6.2rem;
+  left: 0;
+  transition: all var(--transition);
+  padding: var(--menu-padding);
+  margin: 0;
+  transform: translateX(calc(0px - var(--menu-width)));
+
+  &:popover-open {
+    transform: translateX(0);
+  }
+
+  &::backdrop {
+    background-color: rgb(200 200 200 / 70%);
+  }
+
+  a,
+  a:hover {
+    text-decoration: none;
+  }
+
+
+
+  @media print {
+    display: none;
+  }
+
+}
+
+@media (width > 1200px) {
+  .menu {
+    transform: translateX(0);
+  }
+
+  :root {
+    padding-left: var(--menu-width);
+    transition: padding-left var(--transition);
+  }
+
+  button[popovertarget] {
+    display: none;
+  }
+}
+
+// end of body.sitelayout

@@ -1,13 +1,14 @@
 {
   "name": "Blog of mathertel",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "npx @11ty/eleventy",
-    "build:prod": "set ELEVENTY_ENV=prod & npx @11ty/eleventy",
-    "build:css": "sass css/doc.scss docstyle.css",
-    "serve": "npx @11ty/eleventy --serve --incremental",
     "clean": "rmdir /S /Q _site",
+    "build": "npx @11ty/eleventy",
+    "serve": "npx @11ty/eleventy --serve --incremental",
+    "build:css": "sass css/doc.scss docstyle.css",
+    "build:prod": "set ELEVENTY_ENV=prod & npx @11ty/eleventy",
+    "serve:prod": "set ELEVENTY_ENV=prod & npx @11ty/eleventy --serve --incremental",
     "publish": "publish.bat"
   },
   "keywords": [
@@ -19,7 +20,6 @@
   "license": "ISC",
   "description": "Eleventy Project for the Blogs based on eleventy",
   "devDependencies": {
-    "@11ty/eleventy": "^3.0.0",
-    "markdown-it-replace-link": "^1.2.2"
+    "@11ty/eleventy": "^3.0.0"
   }
 }

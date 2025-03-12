@@ -1,13 +1,16 @@
 {
   "title": "title-no-set",
-  "layout": "base",
-  "image": null,
-  "created": 0,
-  "updated": null,
-  "outdated": false,
+  "layout": "post",
   "tags": [],
-
   "eleventyExcludeFromCollections": false,
+
+  "description": "",
+  "created": 0,
+  "modified": null,
+  "draft": false,
+  "outdated": false,
+  "image": null,
+  "imageAlt": "Illustrating the title",
 
   "archiveDate": "2023-01-01",
   "changeFreq": "monthly"

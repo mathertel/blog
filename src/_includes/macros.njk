@@ -4,17 +4,26 @@
 {% macro postCard(post) %}
 <div class="card autolink">
   {%- if (post.data.image) -%}
-    <img src="{{ post.filePathStem }}.jpg">
+    <img src="{{ post.data.image }}" alt="{{ imageAlt }}" title="{{ imageAlt }}"/>
   {%- endif %}
   <div class="main">
     <h3><a  class="postlist-link" href="{{ post.url }}">{{ post.data.title }}</a></h3>
     {{ post.data.description | markdown | safe -}}
   </div>
   <div class="footer">
-  <p><time>{{ post.data.modified | toISODate }}</time> | tag1 tag2 </p>
+  <p><time is='u-time' datetime='{{ post.data.modified | toISODate }}' datestyle='medium' timestyle='none'></time> | 
+    {% if tags %}
+      <span class='taglist'>
+        {%- for tag in post.data.tags | unique -%}
+          <a href="/tags/{{ tag  | lower }}.htm">#{{ tag }}</a>
+        {%- endfor -%}
+      </span>
+    {% endif %}
+  </p>
   </div>
 </div>
 {%- endmacro %}
+
 
 {% macro term(theTerm) %}
 <div class="card">

@@ -12,23 +12,40 @@ permalink: "{{ page.filePathStem }}.htm"
     <link Content-Type="text/css" href="/docstyle.css" rel="stylesheet" />
 
     <style>
-      .nav2 {
-        border-top: 1px solid #222222;
-        border-bottom: 1px solid #222222;
-        background-color: #dddddd;
-        margin: 1em 0;
-        padding: 0.5em;
-        font-size: 0.8em;
-        color: #666;
+      :root {
+        --main-width: 48em;
+      }
 
-        @media print {
-          display: none !important;
+      .taglist {
+        // background-color: yellow;
+        > a {
+          display: inline-block;
+          height: 1.6em;
+          background: #203050;
+          text-align: center;
+          padding: 0.2em 0.6em;
+          position: relative;
+          margin-right: 1em;
+          text-decoration: none;
+          color: #fff;
+        }
+        > a::after {
+          content: "";
+          border-top: 0.8em solid transparent;
+          border-bottom: 0.8em solid transparent;
+          border-left: 0.8em solid #203050;
+          position: absolute;
+          right: -0.8em;
+          top: 0;
         }
       }
 
     </style>
+
     <style>{% getBundle "css" %}</style>
     <title>{{ title }}</title>
+    <script src="/sfc/loader.js"></script>
+    <script>loadComponent('u-time')</script>
   </head>
 
   <body class="sitelayout">
@@ -48,11 +65,24 @@ permalink: "{{ page.filePathStem }}.htm"
       <a href="/../archiv/" class="COLOR_ARCHIVE">Archive</a>
     </header>
 
-    <aside>
+    <nav class="sidebar">
+
+      <h3>Popular tags</h3>
+
+      <div class='taglist'>
+        {# <a href="/tags/arduino.htm" style="margin-bottom:0.4em;">#arduino</a><br/> #}
+        <a href="/tags/arduino.htm" style="margin-bottom:0.4em;">#arduino</a><br/>
+        <a href="/tags/sfc.htm" style="margin-bottom:0.4em;">#sfc</a><br/> 
+        <a href="/tags/eleventy.htm" style="margin-bottom:0.4em;">#eleventy</a><br/>
+      </div>
+
+    {% if not isProduction %}
+      <hr>
+      <p><a href="/tags/index.htm">All Tags</a></p>
       <p><a href="/archive.htm">List of archived posts</a></p>
-      <p><a href="/tags/index.htm">Tags</a></p>
       <p><a href="/sitemap.xml">Sitemap</a></p>
-    </aside>
+    {% endif %}
+    </nav>
 
     <main>
       <p class="noprint" style="text-align: center; font-size: 0.8em">
@@ -66,7 +96,7 @@ permalink: "{{ page.filePathStem }}.htm"
       <a href="/about.md">About</a>
       &mdash;
       <a href="https://www.mathertel.de/impressum.aspx">Legal Statement</a>
-      &mdash; <a href="/license.htm">License</a>
+      &mdash; <a href="/license.md">License</a>
     </footer>
   </body>
 </html>

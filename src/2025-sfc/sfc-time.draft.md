@@ -1,7 +1,8 @@
 ---
 title: Extending the HTML Time Element
 created: 2025-01-13
-tags: ["web-controls"]
+tags: 
+  - "sfc"
 description: >
   The sfc-time Single File Component extends the standard `time` element to use the date and time formatting of the
   current user to display date and time values.

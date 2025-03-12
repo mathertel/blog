@@ -1,10 +1,10 @@
 ---
 title: Eleventy Setup
 created: 2025-01-20
-tags: ["blog", "nodejs"]
+tags: ["eleventy", "nodejs"]
 ---
 
-{% include './toc.njk' %}
+No publish
 
 Eleventy is used as a local Node.js project containing content in markdown, liquid and nunjucks, images and more. The functionality
 os provided by eleventy on the command line or through npm tasks.
@@ -76,7 +76,7 @@ Add useful scripts for development purpose:
 }
 ```
 
-Install another library that extends eleventy. more on this in [Filenames and Links](./21-links.md):
+Install another library that extends eleventy. more on this in [Filenames and Links](../2025/0303-11ty-links.md):
 
 ``` sh
 npm install markdown-it-replace-link -D

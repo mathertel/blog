@@ -4,21 +4,36 @@ import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 // reference markdown conversion library
 import markdownIt from "markdown-it";
 
-// extra library to create full specified links in markdown conversion
-import mdReplaceLink from "markdown-it-replace-link";
-
 // export function to configure eleventy
 export default function(eleventyConfig) {
 
-  // https://coderweekend.com/posts/setup-environments-in-eleventy/
-  // support for multiple environments `dev` `prod`
+  // support `prod` environment not publishing drafts 
+  const prodVariable = process.env.ELEVENTY_ENV;
+  console.log(`Environment: ${prodVariable ? prodVariable : 'not set'}`);
+  eleventyConfig.addGlobalData('isProduction', 
+    (prodVariable && (prodVariable.trim().toLowerCase() === 'prod')));
 
-  let isProduction = false;
-  let env11 = process.env.ELEVENTY_ENV;
-  if (env11) {
-    isProduction = (env11.trim().toLowerCase() === 'prod');
-  };
-  console.log(`Environment: ${isProduction ? 'Production' : 'Development'}`);
+  // Modify all URLs pointing to .md files in all .htm output in your project
+  eleventyConfig.htmlTransformer.addUrlTransform(
+    "htm",
+   
+    /**
+     * transform internal links to markdown fils to the final url using the htm format.
+     * @this {object}
+     * @param {string} url given url in the document
+     */
+    (url) => {
+      let lUrl = url.toLowerCase();
+      if ((! lUrl.startsWith('http')) && (lUrl.endsWith('.md'))) {
+        return(url.substring(0, url.length-2) + 'htm');
+      }  
+      return (url);
+    },
+
+    {
+    	priority: -1, // run last (especially after PathToUrl transform)
+    }
+  );
 
   eleventyConfig.addPlugin(EleventyHtmlBasePlugin, {
     extensions: "htm,html"
@@ -34,6 +49,11 @@ export default function(eleventyConfig) {
     toFileDirectory: "dist",
   });
 
+  // /// exclude all draft files from the build in production mode
+  // eleventyConfig.addPreprocessor("drafts", "njk,md", (data, content) => {
+  //   return (isPublishPage(data) ? undefined : false);
+  // });
+
 
   // Collection posts: All written and published posts.
   // This is the collection that will be used instead of "all" to allow draft files.
@@ -47,24 +67,14 @@ export default function(eleventyConfig) {
       .getFilteredByGlob("src/**/*.md")
       .sort((a, b) => a.data.created - b.data.created);
 
-    if (isProduction) {
-      // debugger;
-      posts = posts.filter((p) => {
-        return(p.fileSlug.indexOf('.draft') < 0);
-      });
+    // add previous references to each post
+    for (let i = 0; i < posts.length - 1; i++) {
+      posts[i].data.previous = posts[i + 1];
     }
-    // posts.addFilter("inspect", function(value) { debugger; });
 
-      
-    // add previous and next post references to each post
-    for (let i = 0; i < posts.length; i++) {
-      if (i > 0) {
-        posts[i].data.previous = posts[i - 1];
-      }
-
-      if (i < posts.length - 1) {
-        posts[i].data.next = posts[i + 1];
-      }
+    // add next references to each post
+    for (let i = 1; i < posts.length; i++) {
+      posts[i].data.next = posts[i - 1];
     }
 
     // set modified to created if not set
@@ -79,9 +89,17 @@ export default function(eleventyConfig) {
   });
 
 
-  // Return the keys used in an object
-  eleventyConfig.addFilter("getKeys", target => {
-    return Object.keys(target);
+  // Return the list of the tags of pages beeing used.
+  eleventyConfig.addFilter("getAllUsedTags", target => {
+    const tags = [];
+
+    Object.keys(target).forEach(key => {
+      if ((key !== 'all') && (key !== 'posts') && target[key].length > 0) {
+        tags.push(key);
+      }
+    });
+
+    return tags;
   });
 
   eleventyConfig.addFilter("filterTagList", function filterTagList(tags) {
@@ -107,29 +125,15 @@ export default function(eleventyConfig) {
       return "";
   });
 
-  // // Collection tags: List of tags in use
-  // // * with list of posts for each tag
-  // // https://stackoverflow.com/questions/72183639/how-to-create-a-tags-collection-and-a-categories-collection-in-eleventy
-  // // https://www.11ty.dev/docs/quicktips/tag-pages
-  // eleventyConfig.addCollection('tags', collection => {
-  //   const tagsSet = {};
-  //   collection.getAll().forEach(item => {
-  //     if (!item.data.tags) return;
-  //     item.data.tags
-  //       // .filter(tag => !['posts', 'all'].includes(tag))
-  //       .forEach(
-  //         tag => {
-  //           if (!tagsSet[tag]) { tagsSet[tag] = []; }
-  //           tagsSet[tag].push(item)
-  //         }
-  //       );
-  //   });
-  //   return tagsSet;
-  // });
+  eleventyConfig.addFilter('dump', (obj) => {
+    console.log(JSON.stringify(obj, null, 2));
+    return "dumped."
+  })
 
 
   // copy static files to output
   eleventyConfig.addPassthroughCopy("src/*.css");
+  eleventyConfig.addPassthroughCopy("src/sfc/*.*");
   eleventyConfig.addPassthroughCopy("src/**/*.svg");
   eleventyConfig.addPassthroughCopy("src/**/*.png");
   eleventyConfig.addPassthroughCopy("src/**/*.jpg");
@@ -141,7 +145,6 @@ export default function(eleventyConfig) {
 
   eleventyConfig.addJavaScriptFunction("inspect", function(value) {
     debugger;
-
   });
 
 
@@ -158,10 +161,10 @@ export default function(eleventyConfig) {
     breaks: false,
     linkify: true,
     typographer: true,
-    replaceLink: link => link.replace(/(^\/[^.]*)\.md$/, "$1.htm"),
+    // replaceLink: link => link.replace(/(^\/[^.]*)\.md$/, "$1.htm"),
   });
   eleventyConfig.setLibrary("md", markdown);
-  markdown.use(mdReplaceLink);
+  // markdown.use(mdReplaceLink);
 
 
   eleventyConfig.addFilter("markdown", (content) => {
@@ -185,13 +188,16 @@ export default function(eleventyConfig) {
   });
 
 
+  // eleventyConfig.addNunjucksGlobal("isProduction", isProduction);
+
   // more options as data
   return {
     pathPrefix: "/blog/",
     dir: {
       input: 'src',
     },
-    isProduction: isProduction
+    markdownTemplateEngine: "njk",
+    htmlTemplateEngine: "njk"
   }
 
 };

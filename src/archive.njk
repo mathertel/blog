@@ -1,15 +1,26 @@
 ---
-title: Latest Blog Posts
+title: Archived Posts
 layout: base
 eleventyExcludeFromCollections: true
 ---
 
 {% from 'macros.njk' import postCard with context %}
 
+{# {% for post in collections.posts reversed %}
+
+  {% capture lastDate %}{{ post.data.modified | date: "%Y-%m-%d" }}{% endcapture %}
+
+  {% if post.data.outdated or lastDate < archiveDate %}
+
+  [{{ post.data.title }}]({{post.url}})
+  <span style="color:red">TOO OLD !</span>
+
+  {% endif %}
+
+{% endfor %} #}
 <div class="card-container horizontal" style="--card-image-size: 200px;--card-height: 200px;">
   {%- for post in collections.posts | reverse %}
     {% if post.data.outdated or lastDate < archiveDate %}
-    {% else %}
       {{ postCard(post) }}
     {% endif %}
   {%- endfor %}
