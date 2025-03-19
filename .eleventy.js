@@ -49,12 +49,7 @@ export default function(eleventyConfig) {
     toFileDirectory: "dist",
   });
 
-  // /// exclude all draft files from the build in production mode
-  // eleventyConfig.addPreprocessor("drafts", "njk,md", (data, content) => {
-  //   return (isPublishPage(data) ? undefined : false);
-  // });
-
-
+  
   // Collection posts: All written and published posts.
   // This is the collection that will be used instead of "all" to allow draft files.
   // * with forward/back navigation references  
