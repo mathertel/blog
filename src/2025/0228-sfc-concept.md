@@ -1,14 +1,21 @@
 ---
-title: Single-File web Components (SFC)
+title: Single-File Web Components (SFC)
 image: "/2025/sfc-box.jpg"
-imageAlt: "A box labeld sfc with 3 contained boxes labeled html, JS and CSS."
+imageAlt: "A box labeled sfc with 3 contained boxes labeled html, JS and CSS."
 created: 2025-02-28
+modified: 2025-03-15
 tags:
   - "sfc"
 description: >
   Single File Components (SFC) got popular as they allow to define the complete code for a component
   in one place.
 ---
+
+<div class="text" style="background-color:yellow">
+
+Github Project: <http://github.com/mathertel/sfc>
+
+</div>
 
 Web standards for HTML, CSS, and JavaScript have matured significantly, providing a robust foundation for modern web
 development.  While these standards offer extensive capabilities, they can't cover every possible use case.
@@ -50,8 +57,9 @@ streamlined development experience while maintaining web standards compliance.
 
 ## Implementation as a Lean / Pure Web Framework
 
-Currently, you can find the loader and SFC control implementations in the <https://github.com/HomeDing/Webfiles> project under the
-`sfc` folder. The framework was initially developed to support the [HomeDing Library](https://homeding.github.io/) with these key features:
+You can find the loader and SFC controls implementations in the <https://github.com/mathertel/sfc> project.
+
+The framework was initially developed to support the [HomeDing Library](https://homeding.github.io/) with these key features:
 
 * **Minimal Footprint**: Designed for IoT devices like ESP8266 or ESP32 processors, where the Web UI must fit within 2MB of Flash memory
 * **Standards-First Approach**: Leverages modern HTML and CSS capabilities instead of heavy JavaScript implementations
@@ -89,6 +97,7 @@ To implement a custom element, you need to:
 2. Create HTML/SVG code for display and user interaction
 3. Define CSS for styling
 4. Write JavaScript for handling options, customization, and user events
+
 
 
 ### File Structure
@@ -195,12 +204,13 @@ second, optional parameter to the `loadComponent` function `loadComponent('my-co
 
 ## More to come
 
-
-* Sources on Github in a dedicated project
 * Extending the HTML Time Element by using SFC
 * Explain packsfc
 
 ## See also
+
+* [SFC Project on Github](https://github.com/mathertel/sfc)
+* [Single-File Components Details-1](0318-sfc-details-1.md)
 
 * [Element Behaviors in Internet Explorer 5.5, MSDN Magazine 2000](https://learn.microsoft.com/en-us/archive/msdn-magazine/2000/december/cutting-edge-element-behaviors-in-internet-explorer-5-5)
 * [Web Components, MDN 2025](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
