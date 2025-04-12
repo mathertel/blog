@@ -1,6 +1,7 @@
 {# Macros to be included into --layouts and templates #}
 {# {% from 'macros.njk' import postCard with context %} #}
 
+{# Render a card about a blog post using page metadata #}
 {% macro postCard(post) %}
 <div class="card autolink">
   {%- if (post.data.image) -%}
@@ -11,7 +12,8 @@
     {{ post.data.description | markdown | safe -}}
   </div>
   <div class="footer">
-  <p><time is='u-time' datetime='{{ post.data.modified | toISODate }}' datestyle='medium' timestyle='none'></time> | 
+  <p><time is='u-time' datetime='{{ post.data.modified | toISODate }}' datestyle='medium' timestyle='none'>
+    {{ post.data.modified | toISODate }}</time> | 
     {% if tags %}
       <span class='taglist'>
         {%- for tag in post.data.tags | unique -%}
@@ -21,17 +23,5 @@
     {% endif %}
   </p>
   </div>
-</div>
-{%- endmacro %}
-
-
-{% macro term(theTerm) %}
-<div class="card">
-  {%- if (post.data.image) -%}
-    <a  class="postlist-link" href="{{ post.url }}"><img src="{{ post.filePathStem }}.jpg"></a>
-  {%- endif %}
-  <h3><a  class="postlist-link" href="{{ post.url }}">{{ post.data.title }}</a></h3>
-  {{ post.data.description | markdown | safe -}}
-  <p>{{ post.data.modified | toISODate }} | tag1 tag2 </p>
 </div>
 {%- endmacro %}

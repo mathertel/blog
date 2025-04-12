@@ -4,7 +4,7 @@ layout: base
 eleventyExcludeFromCollections: true
 ---
 
-{% from 'macros.njk' import postCard with context %}
+{%- from 'macros.njk' import postCard with context -%}
 
 <div class="card-container horizontal" style="--card-image-size: 200px;--card-height: 200px;">
   {%- for post in collections.posts | reverse %}

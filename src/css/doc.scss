@@ -1,0 +1,137 @@
+// file: doc.scss
+// document layout rules
+// This is part of the micro css implementation.
+
+@use "base";
+@use "page";
+@use "card";
+@use "code";
+@use "iot";
+
+// Tables
+
+table {
+  empty-cells: show;
+  border-collapse: collapse;
+  border-left: solid 1px #203050;
+  border-right: solid 1px #203050;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+
+  thead tr {
+    background-color: #203050;
+
+    th {
+      color: white;
+    }
+  }
+
+  td,
+  th {
+    vertical-align: top;
+    padding: 0.2em 0.6em;
+    border-bottom: 1px solid #203050;
+  }
+
+  th {
+    font-weight: bold;
+  }
+}
+
+
+.warning {
+  margin: 0.2rem;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+}
+
+
+// mark links to external sites
+
+a[href^='http']::after {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: text-bottom;
+  margin-left: 0.25em;
+  background-size: 1em;
+  background-image: url("data:image/svg+xml, %3Csvg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22.689 4v4.918h13.114l-17.049 17.05 3.279 3.606 17.377-17.05v12.787H44V4z' /%3E%3Cpath d='M33 22.99V40H8V15h17v-4l-21 .001V44h33V22.952z' /%3E%3C/svg%3E");
+}
+
+
+// ===== Text formatting =====
+
+p,
+pre,
+h1,
+h2,
+h3,
+h4,
+.text {
+  margin: 0;
+  min-height: 1em;
+
+  >img,
+  >svg {
+    // assume image in text containers to be inline icons
+    height: 1em;
+    height: auto;
+
+    &:first-child {
+      margin-right: 0.2em;
+    }
+  }
+}
+
+p:not(:first-child),
+pre:not(:first-child),
+.text:not(:first-child) {
+  margin-top: var(--text-spacing);
+}
+
+h1:not(:first-child),
+h2:not(:first-child),
+h3:not(:first-child),
+h4:not(:first-child) {
+  margin-top: calc(var(--text-spacing) * 3);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+  font-family: base.$u-font-sans-serif;
+  font-weight: bold;
+  clear: both;
+}
+
+// Title h1 in base.scss
+
+// Chapter
+h2 {
+  font-size: 1.6em;
+  min-height: 1.6em;
+}
+
+// Topic
+h3 {
+  font-size: 1.25em;
+  min-height: 1.25em;
+}
+
+// Subtitle
+h4 {
+  font-size: 1em;
+  min-height: 1em;
+}
+
+
+@media print {
+  html,
+  body {
+    font-size: 0.66em;
+    background-color: white;
+  }
+}

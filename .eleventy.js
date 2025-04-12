@@ -156,11 +156,8 @@ export default function(eleventyConfig) {
     breaks: false,
     linkify: true,
     typographer: true,
-    // replaceLink: link => link.replace(/(^\/[^.]*)\.md$/, "$1.htm"),
   });
   eleventyConfig.setLibrary("md", markdown);
-  // markdown.use(mdReplaceLink);
-
 
   eleventyConfig.addFilter("markdown", (content) => {
     let r = '';
@@ -181,9 +178,6 @@ export default function(eleventyConfig) {
     let html = `<dl>${content}</dl>`;
     return html;
   });
-
-
-  // eleventyConfig.addNunjucksGlobal("isProduction", isProduction);
 
   // more options as data
   return {

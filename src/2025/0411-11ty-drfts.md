@@ -1,7 +1,9 @@
 ---
 title:  Draft posts and controlled publishing
 description: How to mark unfinished posts as drafts and control the time of publishing
-created: 2025-03-20
+created: 2025-04-11
+image: "/2025/draft.png"
+imageAlt: "A rubber stamp with word draft"
 tags:
   - "eleventy"
 ---
@@ -20,7 +22,7 @@ Here I show how to use 2 separate mechanisms to marking markdown files as drafts
 
 ## Marking as Draft
 
-As proposed by several other articles a `draft` [metadata attribute](../2025/0703-11ty-metadata.md) can be added to any page.  When set
+As proposed by several other articles a `draft` [metadata attribute](./0703-11ty-metadata.md) can be added to any page.  When set
 to `true` the page should not be part of the official published set of posts and should not appear in any of the lists.
 
 as an alternate approach the path of the file is reflected as well. When there is a `draft`as substring in the path the files or the complete folder is also excluded in the production build.
@@ -62,9 +64,9 @@ named `isProduction` that is set to true for production builds:
     (prodVariable && (prodVariable.trim().toLowerCase() === 'prod')));
 ```
 
-For production builds the 2 [Metadata Attributes](../2025/0703-11ty-metadata.md) `eleventyExcludeFromCollections` and `permalink` must
+For production builds the 2 [Metadata Attributes](./0703-11ty-metadata.md) `eleventyExcludeFromCollections` and `permalink` must
 be overwritten to exclude the files.  This can be implemented in Eleventy by adding a calculation script for these
-[Metadata Attributes](../2025/0703-11ty-metadata.md) in the file `src.11tydata.js` in the `src` folder:  
+[Metadata Attributes](./0703-11ty-metadata.md) in the file `src.11tydata.js` in the `src` folder:  
 
 ``` js
 export default function(globals) {
@@ -101,6 +103,6 @@ export default function(globals) {
 
 ## See also
 
-* [Metadata Attributes](../2025/0703-11ty-metadata.md)
+* [Metadata Attributes](./0703-11ty-metadata.md)
 * <https://coderweekend.com/posts/setup-environments-in-eleventy/>
 * <https://jkc.codes/blog/creating-drafts-in-eleventy/>

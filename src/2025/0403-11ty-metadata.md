@@ -1,12 +1,11 @@
 ---
 title: Metadata for Posts
 description: Details about the Metadata usage.
-created: 2025-03-07
+created: 2025-04-03
 image: "/2025/11ty-metadata.png"
 imageAlt: "Tag with ballon."
 tags:
   - "eleventy"
-draft: true
 ---
 
 The attributes added to a post's content are called metadata.  They help organize and structure content in an

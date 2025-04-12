@@ -1,0 +1,275 @@
+// file: base.scss
+// colors, dark mode, sizes, page level layout
+// This is part of the micro css implementation.
+
+// ===== Colors =====
+// hue of 220 is signature of this style
+
+@use 'sass:color';
+
+// the u-hue value is the main color of the style
+$u-hue: 220deg;
+
+$u-primary: hsl($u-hue 80% 30%); // active objects
+$u-primary-text: white;
+
+$u-border-color: #555555;
+$u-border-color-active: hsl($u-hue 100% 30%);
+
+$u-disabled: gray; // disabled objects
+$u-connect: #00cc00; // connectivity / net
+
+$u-padding-text: 4px;
+$u-padding-block: calc(2 * $u-padding-text);
+
+$u-border-size: 1px;
+$u-border: $u-border-size solid $u-border-color;
+$u-border-none: $u-border-size solid transparent;
+$u-border-active: $u-border-size solid $u-border-color-active;
+
+
+// ===== Content Box Sizes =====
+
+$u-white-space: 1rem;
+$u-gutter: calc($u-white-space / 2);
+$u-gutter2: calc($u-white-space / 4);
+
+// distance between paragraphs and other textual blocks
+$u-text-spacing: calc($u-white-space / 2);
+
+$u-btn-radius: calc($u-padding-block / 2);
+$u-output-border: $u-border-none;
+
+
+// ===== font =====
+
+$u-font-sans-serif: arial, ui-sans-serif, sans-serif;
+
+// ===== main =====
+
+:root {
+  color-scheme: light dark;
+
+  // standard colors used for <html>
+  --back: light-dark(hsl(#{$u-hue} 2% 85%), hsl(#{$u-hue} 2% 15%));
+  --color: light-dark(hsl(#{$u-hue} 0 10%), hsl(#{$u-hue} 0 90%)); 
+
+  --success-hue: 80deg;
+  --success-back: hsl(var(--success-hue) 90% 75%);
+  --success-line: hsl(var(--success-hue) 90% 40%);
+
+  --warning-hue: 40deg;
+  --warning-back: hsl(var(--warning-hue) 90% 75%);
+  --warning-line: hsl(var(--warning-hue) 90% 40%);
+  --warning-color: black;
+  
+  --error-hue: 0deg;
+  --error-back: hsl(var(--error-hue) 90% 75%);
+  --error-line: hsl(var(--error-hue) 90% 40%);
+  --error-color: color;
+
+  --focus: #{hsl($u-hue, 50%, 50%)};
+
+  --text-spacing: #{$u-text-spacing};
+  --transition: 0.3s ease;
+}
+
+html,
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: $u-font-sans-serif;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  color: var(--color);
+  background-color: var(--back);
+}
+
+// apply a natural box layout model to all elements, but allowing components to change
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+img {
+  max-width: 600px;
+  height: auto;
+}
+
+a,
+a:any-link {
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+// use-cases of svg icons
+
+svg {
+  color: currentcolor;
+
+  &.button {
+    width: 2em;
+    height: 2em;
+
+    .object {
+      fill: $u-primary;
+      fill-opacity: 1;
+    }
+
+    .connect {
+      fill: $u-connect;
+      fill-opacity: 1;
+    }
+  }
+
+  &.icon {
+    user-select: none;
+  }
+}
+
+
+// Title us used everywhere
+h1 {
+  font-size: 2em;
+}
+
+
+
+// form elements
+
+label,
+input,
+input+span,
+input::placeholder,
+select,
+output,
+button {
+  display: inline-block;
+  font-size: inherit;
+  margin: 0;
+  border: $u-border-none;
+  padding: 0.1em 0.2em;
+  color: currentcolor;
+}
+
+input[type='color'] {
+  padding: 0;
+  border: 0;
+}
+
+input::placeholder {
+  padding-top: 0.4em;
+  font-size: 0.8em;
+}
+
+label {
+  cursor: pointer;
+  height: 1.6em;
+
+  >img,
+  >.icon {
+    // vertical-align: middle;
+    width: 1em !important;
+    height: 1em !important;
+    margin: 0 !important;
+  }
+}
+
+input,
+select,
+button {
+  border-color: var(--color);
+}
+
+input,
+select {
+  width: 22ch;
+  border-radius: 0.2em;
+}
+
+select {
+  padding-left: 0;
+}
+
+select:invalid,
+input:invalid {
+  border-color: #ff5555;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  width: 2ch;
+  vertical-align: baseline;
+}
+
+// ===== Native dialogs and focus Object
+
+dialog::backdrop {
+  background-color: rgb(200 200 200 / 70%);
+}
+
+dialog {
+  position: relative;
+  padding: 1rem;
+  background-color: canvas;
+  border: 0;
+
+  .u-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    height: 1.6rem;
+    width: 1.6rem;
+    background-color: red;
+    background-size: 1.6rem 1.6rem;
+    background-repeat: no-repeat;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M12 12L36 36M36 12L12 36' stroke='white' stroke-width='8' stroke-linecap='round' /></svg>");
+    z-index: 1 !important;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2rem;
+    height: 2rem;
+    z-index: -1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M0 0h48v48h-16v-32h-32z' fill='red' /></svg>");
+  }
+}
+
+.warning {
+  border: 2px solid var(--warning-line);
+  background-color: var(--warning-back);
+  color: var(--warning-color);
+}
+
+.error {
+  border: 2px solid var(--error-line);
+  background-color: var(--error-back);
+  color: var(--error-color);
+}
+
+.invalid {
+  border: 2px solid #ff1111 !important;
+  background-color: #ffcccc !important;
+  color: var(--color);
+}
+
+.valid {
+  border: 2px solid #00cc00 !important;
+  background-color: #ccffcc !important;
+  color: var(--color);
+}
+
+.noprint {
+  @media print {
+    display: none !important;
+  }
+}

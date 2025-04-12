@@ -1,0 +1,401 @@
+@use "sass:color";
+@use "base";
+@use "card";
+@use "page";
+
+// file: iot.scss
+// Element and card rules for iot dashboards
+// This is part of the micro css implementation.
+
+$u-on: color.scale(green, $lightness: 10%);
+$u-off: red;
+
+// ===== Cards layout =====
+
+:root {
+  --grid-width: 20ch;
+  --grid-gap: 1ch;
+}
+
+// iot specific card modifications
+.card {
+  &.active {
+    .border {
+      border-color: base.$u-border-color-active;
+    }
+
+    .band::-webkit-slider-thumb {
+      border-color: base.$u-border-color-active transparent;
+    }
+
+    >.header {
+      background-color: var(--card-head-active);
+    }
+  }
+
+  img,
+  svg {
+    &.active {
+      background-color: limegreen;
+    }
+  }
+
+  >hr {
+    background-color: rgb(0 0 0 / 12.5%);
+    border: 0;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    vertical-align: top;
+  }
+}
+
+
+// ===== forms / input / groups =====
+
+button,
+.button {
+  display: inline-block;
+  min-width: 6.5ch;
+
+  // height: 1.4em;
+  padding: calc(base.$u-padding-text / 2) base.$u-padding-text;
+  border-radius: base.$u-btn-radius;
+  border-color: base.$u-primary;
+  background-color: base.$u-primary;
+  color: base.$u-primary-text;
+  cursor: pointer;
+  user-select: none;
+
+  &:visited {
+    color: white;
+  }
+
+  &:disabled,
+  &:disabled:focus {
+    border-color: base.$u-disabled;
+    background-color: base.$u-disabled;
+  }
+
+  &.active {
+    background-color: #acc1e4 !important;
+    border-color: #203050 !important;
+  }
+
+  &.secondary {
+    background-color: #777777;
+    border-color: #777777;
+  }
+}
+
+// standard input elements
+
+option[disabled] {
+  color: base.$u-disabled;
+}
+
+// slider implemented using input[type=range] element
+
+input[type='range'] {
+  appearance: none;
+  -webkit-appearance: none; // stylelint-disable-line property-no-vendor-prefix
+  vertical-align: top;
+  margin: 0.2em;
+  height: 1.2em;
+  padding: 0;
+  width: 9.8em;
+  transition: 0.4s all ease-out;
+
+  // border: 1px solid #555555;
+  border-radius: 0.6em;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none; // stylelint-disable-line property-no-vendor-prefix
+    height: 1em;
+    width: 1em;
+    border-radius: 0.5em;
+    background: #203050;
+    border: 1px solid #f0f0f0;
+    cursor: pointer;
+  }
+}
+
+// switch = slider with range 0..1
+
+input.switch[type='range'] {
+  pointer-events: none;
+  width: 2.5em !important;
+}
+
+*:focus {
+  outline: 0;
+  box-shadow: 0 0 0.1rem 0.2rem var(--focus);
+}
+
+.btn-group {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+
+  >* {
+    flex: 1 1 auto;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  >*:first-child {
+    border-top-left-radius: base.$u-btn-radius;
+    border-bottom-left-radius: base.$u-btn-radius;
+  }
+
+  >*:last-child {
+    border-top-right-radius: base.$u-btn-radius;
+    border-bottom-right-radius: base.$u-btn-radius;
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 12.6ch auto;
+  grid-gap: 5px;
+  margin-bottom: 0.5rem;
+
+  >* {
+    grid-column-end: -1;
+  }
+
+  >label {
+    grid-column: 1;
+    text-align: right;
+  }
+
+  >.wide {
+    grid-column: 1/-1;
+  }
+
+  .icon {
+    width: 1.2em;
+    height: 1.2em;
+    margin: 0.2em;
+  }
+}
+
+.form-inline {
+  height: 1.6em;
+
+  >* {
+    vertical-align: top;
+  }
+}
+
+.form-actions {
+  display: flex;
+  flex-flow: row wrap;
+  gap: base.$u-gutter2;
+}
+
+
+// ===== element Icons =====
+
+.element {
+  position: relative;
+  display: inline-block;
+  height: 6rem;
+  width: 6rem;
+  margin: 0.6rem;
+
+  &.wide {
+    width: 10rem;
+  }
+
+  >svg,
+  >img {
+    position: relative;
+    left: 1rem;
+    top: 0.4rem;
+    height: 4rem;
+    width: 4rem;
+  }
+
+  >.id {
+    position: absolute;
+    display: inline-block;
+    bottom: 0.4rem;
+    left: 0;
+    height: 1rem;
+    width: 6rem;
+    text-align: center;
+  }
+
+  >.info {
+    position: absolute;
+    display: inline-block;
+    top: 0.4rem;
+    right: 0;
+    height: 5.2rem;
+    width: 4rem;
+  }
+}
+
+// ===== Value indicators for the web UI =====
+// using ux- prefix.
+
+.u-bool {
+  display: inline-block;
+  height: 1.4rem;
+  width: 1.4rem;
+  border-radius: 0.7rem;
+  text-align: center;
+  background-color: silver;
+}
+
+.u-bool[value='1'] {
+  background-image: linear-gradient(145deg, color.adjust($u-on, $lightness: 30%), $u-on);
+}
+
+.u-bool[value='0'] {
+  background-image: linear-gradient(145deg, color.adjust($u-off, $lightness: 30%), $u-off);
+}
+
+// visualizing the output level 0...max
+.ux-levelbar {
+  display: inline-block;
+  border-color: base.$u-primary;
+  border-style: solid;
+  border-width: 1px;
+  width: 32px;
+  height: 64px;
+}
+
+// show something on the right side of the card visualizing the actual value of the element
+
+.ux-value {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+}
+
+// Timer-bar
+
+.u-bar {
+  position: relative;
+  height: 1.4em;
+  width: 100%;
+  background-color: #aaaaaa;
+}
+
+.u-bar>.pulse,
+.u-bar>.current {
+  display: inline-block;
+  position: absolute;
+}
+
+.u-bar>.pulse {
+  top: 0;
+  left: 0;
+  height: 1.4em;
+  background-color: green;
+}
+
+.u-bar>.current {
+  top: 0.4em;
+  height: 0.6em;
+  background-color: red;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.border {
+  border: base.$u-border;
+}
+
+// ===== Display Element =====
+
+.display {
+  position: relative;
+  box-sizing: content-box;
+  margin: auto;
+  line-height: 10px;
+  font-size: 10px;
+  font-family: Verdana, Geneva, sans-serif;
+  border: 2px solid base.$u-border-color;
+
+  >span {
+    box-sizing: border-box;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10px;
+    overflow: hidden;
+    background-color: transparent;
+
+    &.text {
+      color: var(--color);
+    }
+
+    &.dot {
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+
+      &.active {
+        background-color: green;
+      }
+    }
+  }
+
+  >button {
+    box-sizing: border-box;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10px;
+    overflow: hidden;
+    background-color: pink;
+    color: var(--color);
+    border-radius: 0.4em;
+  }
+
+}
+
+// #display
+
+.displayinc {
+  position: relative;
+  margin: auto;
+  zoom: 2;
+
+  >.icon {
+    width: 1.2em;
+    height: 1.2em;
+    margin: 0;
+  }
+}
+
+// ===== Light input sliders =====
+
+input.band {
+  width: 100%;
+  border-radius: 0;
+  border-width: 1px;
+
+  &.hue {
+    background: linear-gradient(to right, red 0%, yellow 17%, lime 33%, aqua 50%, blue 67%, fuchsia 83%, red 100%);
+  }
+
+  &.white,
+  &.lightness,
+  &.saturation {
+    background: linear-gradient(to right, black 0%, white 100%);
+  }
+}
