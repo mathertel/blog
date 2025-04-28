@@ -10,13 +10,13 @@ export default function(eleventyConfig) {
   // support `prod` environment not publishing drafts 
   const prodVariable = process.env.ELEVENTY_ENV;
   console.log(`Environment: ${prodVariable ? prodVariable : 'not set'}`);
-  eleventyConfig.addGlobalData('isProduction', 
+  eleventyConfig.addGlobalData('isProduction',
     (prodVariable && (prodVariable.trim().toLowerCase() === 'prod')));
 
   // Modify all URLs pointing to .md files in all .htm output in your project
   eleventyConfig.htmlTransformer.addUrlTransform(
     "htm",
-   
+
     /**
      * transform internal links to markdown fils to the final url using the htm format.
      * @this {object}
@@ -24,14 +24,14 @@ export default function(eleventyConfig) {
      */
     (url) => {
       let lUrl = url.toLowerCase();
-      if ((! lUrl.startsWith('http')) && (lUrl.endsWith('.md'))) {
-        return(url.substring(0, url.length-2) + 'htm');
-      }  
+      if ((!lUrl.startsWith('http')) && (lUrl.endsWith('.md'))) {
+        return (url.substring(0, url.length - 2) + 'htm');
+      }
       return (url);
     },
 
     {
-    	priority: -1, // run last (especially after PathToUrl transform)
+      priority: -1, // run last (especially after PathToUrl transform)
     }
   );
 
@@ -49,7 +49,7 @@ export default function(eleventyConfig) {
     toFileDirectory: "dist",
   });
 
-  
+
   // Collection posts: All written and published posts.
   // This is the collection that will be used instead of "all" to allow draft files.
   // * with forward/back navigation references  
@@ -121,7 +121,9 @@ export default function(eleventyConfig) {
   });
 
   eleventyConfig.addFilter('dump', (obj) => {
-    console.log(JSON.stringify(obj, null, 2));
+    // debugger;
+    console.log(obj);
+    // console.log(JSON.stringify(obj, null, 2));
     return "dumped."
   })
 

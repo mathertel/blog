@@ -7,9 +7,9 @@
   
     {
       "type": "node-terminal",
-      "name": "Run Script: build:prod",
+      "name": "Run Script: build",
       "request": "launch",
-      "command": "npm run build:prod",
+      "command": "npm run build",
       "cwd": "${workspaceFolder}",
       "serverReadyAction": {
         "pattern": "Server at http:\/\/([A-Za-z0-9]+:[0-9]+)\/blog/",

@@ -207,7 +207,7 @@ Arguments:
        Allow only certain template types (default: `*`)
 
      --quiet
-       Don’t print all written files (off by default)
+       Don't print all written files (off by default)
 
      --config=filename.js
        Override the eleventy config file path (default: `.eleventy.js`)
@@ -216,7 +216,7 @@ Arguments:
        Change all url template filters to use this subdirectory.
 
      --dryrun
-       Don’t write any files. Useful in DEBUG mode, for example: `DEBUG=Eleventy* npx @11ty/eleventy --dryrun`
+       Don't write any files. Useful in DEBUG mode, for example: `DEBUG=Eleventy* npx @11ty/eleventy --dryrun`
 
      --loader
        Set to "esm" to force ESM mode, "cjs" to force CommonJS mode, or "auto" (default) to infer it from package.json.
