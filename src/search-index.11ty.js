@@ -38,11 +38,11 @@ function uniqueWords(txt) {
 		txt = txt.replace(new RegExp(x[0], "g"), x[1]);
 	}
 
-	const segs = segmenter.segment(txt);
+	const segments = segmenter.segment(txt);
 	const words = new Set();
 
 	// collect unique words not on stoplist
-	for (const s of segs) {
+	for (const s of segments) {
 		if (s.isWordLike) {
 			const w = s.segment.toLowerCase();
 			if (!stopwords.includes(w)) words.add(w);

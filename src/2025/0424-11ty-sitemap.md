@@ -42,15 +42,20 @@ permalink: /sitemap.xml
 eleventyExcludeFromCollections: true
 layout: false
 ---
+{{ '
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{% for page in collections.posts %}{% if not page.data.draft -%}<url>
+
+{% for page in collections.posts %}{% if not page.data.draft -%}
+<url>
   <loc>https://www.mathertel.de{{ page.url | url }}</loc>
   <lastmod>{{ page.date.toISOString() }}</lastmod>
   <changefreq>{{ page.data.changeFreq if page.data.changeFreq else "monthly" }}</changefreq>
 </url>
 {% endif %}{% endfor %}
+
 </urlset> 
+' | safe }}
 ```
 
 The `<loc>` in the `<url>` should use complete URLs including protocol and domain name.  This requires that the domain
