@@ -1,8 +1,9 @@
 // parse html to extend links with prefix 
 import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 
-// reference markdown conversion library
+// reference markdown conversion library and plugins
 import markdownIt from "markdown-it";
+import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
 
 // export function to configure eleventy
 export default function(eleventyConfig) {
@@ -160,6 +161,10 @@ export default function(eleventyConfig) {
     typographer: true,
   });
   eleventyConfig.setLibrary("md", markdown);
+
+  markdown.use(MarkdownItGitHubAlerts, {
+    markers: '*'
+  });
 
   eleventyConfig.addFilter("markdown", (content) => {
     let r = '';
